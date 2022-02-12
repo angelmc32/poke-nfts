@@ -1,20 +1,17 @@
 const main = async () => {
   const nftContractFactory = await hre.ethers.getContractFactory("PokedexNFT");
   const nftContract = await nftContractFactory.deploy();
+  const NFTQuantity = 23;
   await nftContract.deployed();
   console.log("Contract deployed to:", nftContract.address);
 
-  // Call the function.
-  let txn = await nftContract.mintPokedexNFT();
-  // Wait for it to be mined.
-  await txn.wait();
-  console.log("Minted NFT #1")
-
-  // Mint another NFT for fun.
-  txn = await nftContract.mintPokedexNFT();
-  // Wait for it to be mined.
-  await txn.wait();
-  console.log("Minted NFT #2")
+  for (let i = 0; i < NFTQuantity; i++) {
+    // Call the function.
+    let txn = await nftContract.mintPokedexNFT();
+    // Wait for it to be mined.
+    await txn.wait();
+    console.log(`Minted NFT #${i}`);
+  }
 };
 
 const runMain = async () => {

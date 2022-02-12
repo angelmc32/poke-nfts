@@ -3,25 +3,37 @@ pragma solidity ^0.8.0;
 // We first import some OpenZeppelin Contracts.
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+/* import "@chainlink/contracts/src/v0.6/VRFConsumerBase.sol"; */
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "hardhat/console.sol";
 import { Base64 } from "../libraries/base64.sol";
 
 // We inherit the contract we imported. This means we'll have access
 // to the inherited contract's methods.
-contract PokedexNFT is ERC721URIStorage {
+contract PokemonFactory is ERC721URIStorage {
   // Magic given to us by OpenZeppelin to help us keep track of tokenIds.
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIds;
-
-  string baseSvg = "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><style>.base { fill: white; font-family: serif; font-size: 24px; }</style><rect width='100%' height='100%' fill='black' /><text x='50%' y='50%' class='base' dominant-baseline='middle' text-anchor='middle'>";
-
+  
+  string baseSvg = "randomstring";
   string[] firstWords = ["Bulbasaur", "Charmander", "Squirtle", "Chikorita", "Cyndaquil", "Totodile", "Treecko", "Torchic", "Mudkip", "Turtwig", "Chimchar", "Piplup", "Snivy", "Tepig", "Oshawott", "Chespin", "Fennekin", "Froakie", "Rowlet", "Litten", "Popplio", "Grookey", "Scorbunny", "Sobble"];
   string[] secondWords = ["Hardy", "Lonely", "Brave", "Adamant", "Naughty", "Bold", "Docile", "Relaxed", "Impish", "Lax", "Timid", "Hasty", "Serious", "Jolly", "Naive", "Modest", "Mild", "Quiet", "Bashful", "Rash", "Calm", "Gentle", "Sassy", "Careful", "Quirky"];
   string[] thirdWords = ["PokeBall", "GreatBall", "UltraBall", "LuxuryBall", "PremierBall", "SafariBall", "FastBall", "LevelBall", "RepeatBall", "TimerBall", "DuskBall", "QuickBall"];
 
+  struct Pokemon {
+    uint256 HP;
+    uint256 Attack;
+    uint256 Defense;
+    uint256 SpAttack;
+    uint256 SpDefense;
+    uint256 Speed;
+  }
+
   // We need to pass the name of our NFTs token and its symbol.
   constructor() ERC721 ("PokeLettersNFT", "POKELET") {
-    console.log("This is my Pokemon Letters NFT contract. Woah!");
+    console.log("This is my Pokemon NFT Factory contract. Woah!");
   }
 
   function pickRandomFirstWord(uint256 tokenId) public view returns (string memory) {
